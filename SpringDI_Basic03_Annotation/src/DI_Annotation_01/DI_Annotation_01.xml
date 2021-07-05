@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:context="http://www.springframework.org/schema/context" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/context 
+	   http://www.springframework.org/schema/context/spring-context.xsd">
+
+<!-- 
+	- java코드
+		MonitorViewer viewer = new MonitorViewer();
+		Recoder recoder = new Recoder();
+		
+		viewer.setRecoder(recoder); //주입(injection)
+ --> 	
+ 
+ <!--  
+   - xml로 바꾸기
+ 
+	<bean id="recoder" class="DI_Annotation_01.Recoder"></bean>
+	<bean id="monitorViewer" class="DI_Annotation_01.MonitorViewer">
+		<property name="recoder">
+			<ref bean="recoder"/>
+		</property>
+	</bean>	
+-->
+
+<!-- 
+	- annotation으로 바꾸기
+		@Autowired > Type기반
+		목적 : 의존관계를 자동설정할 때 사용하며 [타입을 이용]하여 의존하는 객체를 삽입해 준다. 
+		      그러므로 (IOC Container) 해당 타입의 빈객체가 존재하지 않거나 또는 2개 이상 존재할 경우 스프링은 예외를 발생시키게 된다.
+		설정 위치 : 생성자, 필드, 메소드(굳이 setter메소드가 아니여도 된다)
+		*추가설정 : AutowiredAnnotationBeanPostProcessor 클래스를 빈으로 등록시켜줘야 한다.
+				 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
+		
+		@Autowired이 동작되기 위해서는 선행객체가 필요하다.(IOC컨테이너 안에 생성되어 있어야한다.)
+		>> new AutowiredAnnotationBeanPostProcessor();
+		<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"></bean>
+		>> 너무 복잡하고 길기 때문에 아래코드로 대체한다.
+		<context:annotation-config/>
+		: annotation 사용에 필요한 모든 클래스를 한방에 빈객체를 생성해서 컨테이너에 올리리는 앨리먼트. (단점: 현재 사용하지 않는 bean객체도 자동으로 등록된다.)
+		
+		
+		<예외>
+		java.lang.ClassNotFoundException: org.springframework.aop.TargetSource
+		: @Autowired 동작시 내부적으로 AOP작업을 하므로 필요한 jar파일추가!
+		
+		
+		@Autowired이 정상적으로 동작이 되지 않는 경우
+		1. Injection되는 타입객체가(bean) 컨테이너안에 없는 경우
+		2. 컨테이너 안에 같은 타입의 객체가 여러개 있는 경우
+			<bean id="a" class="DI_Annotation_01.Recoder"></bean>
+			<bean id="b" class="DI_Annotation_01.Recoder"></bean>
+			<bean id="c" class="DI_Annotation_01.Recoder"></bean>
+		3. 컨테이너 안에 같은 타입의 객체가 여러개 존재하더라도 bean의 id값이 setter함수의 memberfield명과 동일하다면 주입성공
+		   원칙) @Resource (by name)사용
+		
+	-->
+	<context:annotation-config/>
+	<bean id="recoder" class="DI_Annotation_01.Recoder"></bean>
+	<bean id="monitorViewer" class="DI_Annotation_01.MonitorViewer"></bean>
+	
+	<bean id="a" class="DI_Annotation_01.Recoder"></bean>
+	<bean id="b" class="DI_Annotation_01.Recoder"></bean>
+	<bean id="c" class="DI_Annotation_01.Recoder"></bean>
+	
+</beans>
+
+
+

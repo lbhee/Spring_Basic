@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!--  
+
+* spring은 자신만의 컨테이너(Spring전용 메모리 공간) 안에 
+  xml 또는 annotation을 통해서 객체의 생성과 조립을 수행(객체간의 관계 설정)
+
+* ApplicationContext context = new GenericXmlApplicationContext("classpath:DI_05_Spring/DI_05.xml");  로 컨테이너가 생성되고
+  DI_05.xml 문서를 read해서 안에 있는 코드를 실행(객체 생성과 의존설정)
+  context (컨테이너) 안에서 필용한 자원을(객체) 불러서 사용 .... getbean()을 통해서!
+
+* 제어의 역전 IOC (프로그램이 제어 구조가 바꾼다)
+   : 작은 단위의 부품을 만들어 놓고 그 것을 조립하는 행위 (레고블럭 처럼)
+     https://cafe.naver.com/bit2021/952 참조
+
+
+
+ - java코드
+	MyBean mybean= new MyBean();
+	
+	MyBean mybean2 = new MyBean("hong");
+
+	Singleton single = Singleton.getInstance();
+-->
+   	<bean id="mybean" class="DI_05_Spring.MyBean"></bean>
+   	
+   	<bean id="mybean2" class="DI_05_Spring.MyBean">
+   			<constructor-arg  value="hong" />
+   	</bean>
+   	
+   	<bean id="single" class="DI_05_Spring.Singleton"  factory-method="getInstance" />
+   	<!--  
+	   	xml설정
+	   	3.x.x 버전 : factory-method="getInstance" 
+	   	4.x.x 버전 : factory-method="getInstance"  생략 가능
+	   	>> factory-method 있는 것이 가독성이 좋다!
+   	-->
+</beans>

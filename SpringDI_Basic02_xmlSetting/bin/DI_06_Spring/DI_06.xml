@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!--  
+객체의 생성과 조립(주입)
+
+  - java코드
+	    OracleArticleDao articledao = new OracleArticleDao();
+		MySqlArticleDao  articledao = new MySqlArticleDao();
+		
+		ArticleService articleservice = new ArticleService(articledao);
+			
+		Article article = new Article();
+-->
+
+  	<!-- <bean  id="articledao"   class="DI_06_Spring.OracleArticleDao"></bean> -->    <!-- 오라클로 연결시 -->
+  	<bean  id="articledao"   class="DI_06_Spring.MySqlArticleDao"></bean>              <!-- MySql로 연결시-->
+  	
+  	
+  	<bean  id="articleservice"   class="DI_06_Spring.ArticleService">
+  			<constructor-arg>
+  					<ref  bean="articledao" /> <!-- 생성자를 통해 값이 아니라 주소값 주입 -->
+  			</constructor-arg>
+  	</bean>
+
+  	
+  	<bean id="article"   class="DI_06_Spring.Article"></bean>
+  	
+</beans>
